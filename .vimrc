@@ -9,7 +9,7 @@ set smartcase " ignore case in search
 set incsearch " show search results as you type
 set showcmd " show command as it is being entered
 set smartindent
-"set timeoutlen=100 ttimeoutlen=10 " shorten key press timeout
+"set timeoutlen=300 ttimeoutlen=300 " shorten key press timeout
 set belloff=all " disable beeping on invalid commands
 set nowrap
 set undodir=~/.vim/undodir
@@ -24,6 +24,7 @@ set shiftwidth=4
 set softtabstop=4
 
 " Clear highlighting on escape in normal mode
+set noesckeys
 nnoremap <esc> :noh<return><esc>
 nnoremap <esc>^[ <esc>^[
 
@@ -48,6 +49,7 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'machakann/vim-highlightedyank'
+Plug 'vim-autoformat/vim-autoformat'
 
 call plug#end()
 
@@ -64,6 +66,7 @@ let g:highlightedyank_highlight_duration = 300
 let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']
 
 nnoremap <leader>d "*d
+nnoremap <leader>c "*c
 nnoremap <leader>y "*y
 nnoremap <leader>p "*p
 nnoremap d "_d
