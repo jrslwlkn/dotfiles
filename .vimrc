@@ -64,6 +64,7 @@ nnoremap <space> <nop>
 
 let g:highlightedyank_highlight_duration = 300
 let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']
+let g:ycm_autoclose_preview_window_after_completion = 1
 
 nnoremap <leader>d "*d
 nnoremap <leader>c "*c
