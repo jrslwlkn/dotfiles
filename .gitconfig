@@ -1,0 +1,24 @@
+[diff]
+	tool = vimdiff
+[user]
+	name = Yareeque
+	email = jrslwlkn@gmail.com
+[difftool]
+	prompt = false
+[alias]
+	pr = pull --rebase
+	a = add -i
+	l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	c = commit
+	ca = commit --amend
+	can = commit --amend --no-edit
+	co = checkout
+	cob = checkout -b
+    b = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+	s = status
+	df = diff
+	dt = difftool
+	m = merge
+	rb = rebase -i
+[pull]
+	rebase = preserve
