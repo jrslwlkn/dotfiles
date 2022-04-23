@@ -7,18 +7,22 @@
 	prompt = false
 [alias]
 	pr = pull --rebase
-	a = add -i
+	a = add -p
 	l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	c = commit
 	ca = commit --amend
 	can = commit --amend --no-edit
 	co = checkout
 	cob = checkout -b
-    b = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+	b = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
 	s = status
 	df = diff
 	dt = difftool
 	m = merge
 	rb = rebase -i
+	sh = stash
+	undo = reset HEAD~1 --mixed
+	res = !git reset --hard
+	p = push origin HEAD
 [pull]
 	rebase = preserve

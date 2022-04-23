@@ -31,8 +31,9 @@ nnoremap <esc>^[ <esc>^[
 " Move line up and down in all modes with Control + j/k
 nnoremap <C-j> :m .+1<CR>==
 nnoremap <C-k> :m .-2<CR>==
-inoremap <C-j> <Esc>:m .+1<CR>==gi
-inoremap <C-k> <Esc>:m .-2<CR>==gi
+" commented out to use this combination in YCM to cycle through optoins
+" inoremap <C-j> <Esc>:m .+1<CR>==gi
+" inoremap <C-k> <Esc>:m .-2<CR>==gi
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
 
@@ -53,24 +54,30 @@ Plug 'vim-autoformat/vim-autoformat'
 
 call plug#end()
 
-
 colorscheme onedark
 highlight LineNr ctermfg=grey
-highlight Visual cterm=reverse guibg=Green 
+highlight Visual cterm=reverse guibg=Green
 highlight HighlightedyankRegion cterm=reverse gui=reverse
 
 let mapleader = " "
 nnoremap <space> <nop>
 
 let g:highlightedyank_highlight_duration = 300
-let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']
 let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']
+let g:ycm_key_list_select_completion = ['<C-j>']
+let g:ycm_key_list_previous_completion = ['<C-k>']
 
+" clipboard operations to use vim clipboard by default
 nnoremap <leader>d "*d
 nnoremap <leader>c "*c
 nnoremap <leader>y "*y
 nnoremap <leader>p "*p
+
+" deletes do not get saved in any register
 nnoremap d "_d
 nnoremap c "_c
 nnoremap x "_x
 
+" format on save
+au BufWrite * :Autoformat
