@@ -1,4 +1,5 @@
 syntax on " highlight syntax
+set rtp^="/Users/yareque/.opam/cs3110/share/ocp-indent/vim" " ocaml stuff
 set backspace=indent,eol,start
 set nocompatible " make vim not compatible with vi to gain extra functionality
 set number " show line numbers
@@ -28,14 +29,14 @@ set noesckeys
 nnoremap <esc> :noh<return><esc>
 nnoremap <esc>^[ <esc>^[
 
-" Move line up and down in all modes with Control + j/k
-nnoremap <C-j> :m .+1<CR>==
-nnoremap <C-k> :m .-2<CR>==
+" Move line up and down in all modes with Option + j/k
+nnoremap ∆ :m .+1<CR>==
+nnoremap ˚ :m .-2<CR>==
 " commented out to use this combination in YCM to cycle through optoins
-" inoremap <C-j> <Esc>:m .+1<CR>==gi
-" inoremap <C-k> <Esc>:m .-2<CR>==gi
-vnoremap <C-j> :m '>+1<CR>gv=gv
-vnoremap <C-k> :m '<-2<CR>gv=gv
+inoremap ∆ <Esc>:m .+1<CR>==gi
+inoremap ˚ <Esc>:m .-2<CR>==gi
+vnoremap ∆ :m '>+1<CR>gv=gv
+vnoremap ˚ :m '<-2<CR>gv=gv
 
 
 call plug#begin('~/.vim/plugged')
@@ -69,15 +70,23 @@ let g:ycm_key_list_select_completion = ['<C-j>']
 let g:ycm_key_list_previous_completion = ['<C-k>']
 
 " clipboard operations to use vim clipboard by default
-nnoremap <leader>d "*d
-nnoremap <leader>c "*c
-nnoremap <leader>y "*y
-nnoremap <leader>p "*p
+" nnoremap <leader>d "*d
+" nnoremap <leader>c "*c
+" nnoremap <leader>y "*y
+" nnoremap <leader>p "*p
+"
+" nnoremap <leader>D "*D
+" nnoremap <leader>C "*C
+" nnoremap <leader>Y "*Y
+" nnoremap <leader>P "*P
 
 " deletes do not get saved in any register
-nnoremap d "_d
-nnoremap c "_c
-nnoremap x "_x
+" nnoremap d "_d
+" nnoremap c "_c
+" nnoremap x "_x
+"
+" nnoremap D "_D
+" nnoremap C "_C
 
 " format on save
 au BufWrite * :Autoformat
