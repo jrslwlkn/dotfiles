@@ -52,6 +52,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'vim-autoformat/vim-autoformat'
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
@@ -63,30 +64,31 @@ highlight HighlightedyankRegion cterm=reverse gui=reverse
 let mapleader = " "
 nnoremap <space> <nop>
 
-let g:highlightedyank_highlight_duration = 300
+let g:highlightedyank_highlight_duration = 50
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']
 let g:ycm_key_list_select_completion = ['<C-j>']
 let g:ycm_key_list_previous_completion = ['<C-k>']
 
-" clipboard operations to use vim clipboard by default
-" nnoremap <leader>d "*d
-" nnoremap <leader>c "*c
-" nnoremap <leader>y "*y
-" nnoremap <leader>p "*p
-"
-" nnoremap <leader>D "*D
-" nnoremap <leader>C "*C
-" nnoremap <leader>Y "*Y
-" nnoremap <leader>P "*P
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+nnoremap <leader>dd "_dd
 
-" deletes do not get saved in any register
-" nnoremap d "_d
-" nnoremap c "_c
-" nnoremap x "_x
-"
-" nnoremap D "_D
-" nnoremap C "_C
+nnoremap <leader>c "_c
+vnoremap <leader>c "_c
+nnoremap <leader>c "_c
+vnoremap <leader>c "_c
+nnoremap <leader>s "_s
+
+nnoremap <leader>y "*y
+vnoremap <leader>y "*y
+
+nnoremap <leader>p "*p
+vnoremap <leader>p "*p
+nnoremap <leader>p "*p
+vnoremap <leader>p "*p
 
 " format on save
 au BufWrite * :Autoformat
