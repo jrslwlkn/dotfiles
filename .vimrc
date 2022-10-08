@@ -109,3 +109,11 @@ nnoremap <leader>r :YcmCompleter RefactorRename
 vnoremap <leader>q :YcmCompleter Format<CR>
 nnoremap <leader>s :YcmCompleter GoToSymbol<CR>
 nnoremap <leader>i <plug>(YCMHover)
+
+nnoremap <leader>f :GFiles<CR>
+nnoremap <leader>F :Files<CR>
+nnoremap <leader>h :History<CR>
+nnoremap <leader>H :History
+nnoremap <leader>c :Commits<CR>
+
+"set grepprg=rg\ --vimgrep\ --smart-case\ --follow
