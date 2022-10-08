@@ -53,6 +53,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'sheerun/vim-polyglot'
+Plug 'dense-analysis/ale'
 
 call plug#end()
 
@@ -69,6 +70,12 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']
 let g:ycm_key_list_select_completion = ['<C-j>']
 let g:ycm_key_list_previous_completion = ['<C-k>']
+let g:ycm_clangd_uses_ycmd_caching = 0
+let g:ycm_clangd_binary_path = exepath("clangd")
+let g:ycm_auto_hover = -1
+
+let g:ale_completion_enabled = 1
+set omnifunc=ale#completion#OmniFunc
 
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
@@ -91,4 +98,14 @@ nnoremap <leader>p "*p
 vnoremap <leader>p "*p
 
 " format on save
-au BufWrite * :Autoformat
+"au BufWrite * :Autoformat
+"vnoremap <leader>q :Autoformat<CR>
+"nnoremap <leader>q :Autoformat<CR>
+
+nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <leader>d :YcmCompleter GoToDocumentOutline<CR>
+nnoremap <leader>t :YcmCompleter GetType<CR>
+nnoremap <leader>r :YcmCompleter RefactorRename 
+vnoremap <leader>q :YcmCompleter Format<CR>
+nnoremap <leader>s :YcmCompleter GoToSymbol<CR>
+nnoremap <leader>i <plug>(YCMHover)
