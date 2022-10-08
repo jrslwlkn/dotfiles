@@ -54,6 +54,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'sheerun/vim-polyglot'
 Plug 'dense-analysis/ale'
+Plug 'mbbill/undotree'
 
 call plug#end()
 
@@ -115,5 +116,7 @@ nnoremap <leader>F :Files<CR>
 nnoremap <leader>h :History<CR>
 nnoremap <leader>H :History
 nnoremap <leader>c :Commits<CR>
+
+nnoremap <leader>u :UndotreeToggle<CR>
 
 "set grepprg=rg\ --vimgrep\ --smart-case\ --follow
