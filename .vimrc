@@ -25,7 +25,7 @@ set shiftwidth=4
 set softtabstop=4
 
 " Clear highlighting on escape in normal mode
-set noesckeys
+" set noesckeys
 nnoremap <esc> :noh<return><esc>
 nnoremap <esc>^[ <esc>^[
 
@@ -116,7 +116,8 @@ nnoremap <leader>F :Files<CR>
 nnoremap <leader>h :History<CR>
 nnoremap <leader>H :History
 nnoremap <leader>c :Commits<CR>
+nnoremap <leader>G :Rg<CR>
 
 nnoremap <leader>u :UndotreeToggle<CR>
 
-"set grepprg=rg\ --vimgrep\ --smart-case\ --follow
+set grepprg=rg\ --vimgrep\ --smart-case\ --follow
