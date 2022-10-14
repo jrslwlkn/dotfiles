@@ -24,20 +24,6 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 
-" Clear highlighting on escape in normal mode
-" set noesckeys
-nnoremap <esc> :noh<return><esc>
-nnoremap <esc>^[ <esc>^[
-
-" Move line up and down in all modes with Option + j/k
-nnoremap ∆ :m .+1<CR>==
-nnoremap ˚ :m .-2<CR>==
-" commented out to use this combination in YCM to cycle through optoins
-inoremap ∆ <Esc>:m .+1<CR>==gi
-inoremap ˚ <Esc>:m .-2<CR>==gi
-vnoremap ∆ :m '>+1<CR>gv=gv
-vnoremap ˚ :m '<-2<CR>gv=gv
-
 
 call plug#begin('~/.vim/plugged')
 
@@ -58,13 +44,11 @@ Plug 'mbbill/undotree'
 
 call plug#end()
 
+
 colorscheme onedark
 highlight LineNr ctermfg=grey
 highlight Visual cterm=reverse guibg=Green
 highlight HighlightedyankRegion cterm=reverse gui=reverse
-
-let mapleader = " "
-nnoremap <space> <nop>
 
 let g:highlightedyank_highlight_duration = 50
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -74,9 +58,27 @@ let g:ycm_key_list_previous_completion = ['<C-k>']
 let g:ycm_clangd_uses_ycmd_caching = 0
 let g:ycm_clangd_binary_path = exepath("clangd")
 let g:ycm_auto_hover = -1
-
 let g:ale_completion_enabled = 1
+
 set omnifunc=ale#completion#OmniFunc
+
+let mapleader = " "
+nnoremap <space> <nop>
+
+" Clear highlighting on escape in normal mode
+" set noesckeys
+nnoremap <esc> :noh<return><esc>
+nnoremap <esc>^[ <esc>^[
+
+" Move line up and down in all modes with Option + j/k
+nnoremap ∆ :m .+1<CR>==
+nnoremap ˚ :m .-2<CR>==
+
+" commented out to use this combination in YCM to cycle through optoins
+inoremap ∆ <Esc>:m .+1<CR>==gi
+inoremap ˚ <Esc>:m .-2<CR>==gi
+vnoremap ∆ :m '>+1<CR>gv=gv
+vnoremap ˚ :m '<-2<CR>gv=gv
 
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
@@ -103,21 +105,33 @@ vnoremap <leader>p "*p
 "vnoremap <leader>q :Autoformat<CR>
 "nnoremap <leader>q :Autoformat<CR>
 
+" Go To Definition/Declaration
 nnoremap <leader>g :YcmCompleter GoTo<CR>
+" Find Usages/References
 nnoremap <leader>d :YcmCompleter GoToDocumentOutline<CR>
+" Get Type
 nnoremap <leader>t :YcmCompleter GetType<CR>
+" Refactor Rename
 nnoremap <leader>r :YcmCompleter RefactorRename 
-vnoremap <leader>q :YcmCompleter Format<CR>
+" Format Selection (not strictly the selection but good enough)
+vnoremap <leader>q :YcmCompleter Format<CR> gv=`>
+" Go To Symbol in File
 nnoremap <leader>s :YcmCompleter GoToSymbol<CR>
+" Show Stub Information
 nnoremap <leader>i <plug>(YCMHover)
-
+" Search in Git Files by Filename
 nnoremap <leader>f :GFiles<CR>
+" Search Global Files by Filename
 nnoremap <leader>F :Files<CR>
-nnoremap <leader>h :History<CR>
-nnoremap <leader>H :History
-nnoremap <leader>c :Commits<CR>
+" Search Global Files by File Contents
 nnoremap <leader>G :Rg<CR>
-
+" Search Recent Files by Filename
+nnoremap <leader>h :History<CR>
+" Search Command History with : and Search the search history with /
+nnoremap <leader>H :History
+" Show Commits
+nnoremap <leader>c :Commits<CR>
+" Toggle Undo Tree
 nnoremap <leader>u :UndotreeToggle<CR>
 
 set grepprg=rg\ --vimgrep\ --smart-case\ --follow
