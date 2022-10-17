@@ -18,6 +18,7 @@ set noswapfile
 set nobackup
 set undofile
 "set clipboard=unnamed
+set completeopt-=preview
 
 " 1 tab width = 4 spaces
 set tabstop=4
@@ -41,6 +42,8 @@ Plug 'vim-autoformat/vim-autoformat'
 Plug 'sheerun/vim-polyglot'
 Plug 'dense-analysis/ale'
 Plug 'mbbill/undotree'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'ThePrimeagen/harpoon'
 
 call plug#end()
 
@@ -59,6 +62,7 @@ let g:ycm_clangd_uses_ycmd_caching = 0
 let g:ycm_clangd_binary_path = exepath("clangd")
 let g:ycm_auto_hover = -1
 let g:ale_completion_enabled = 1
+let g:ycm_add_preview_to_completeopt = 0
 
 set omnifunc=ale#completion#OmniFunc
 
@@ -133,5 +137,17 @@ nnoremap <leader>H :History
 nnoremap <leader>c :Commits<CR>
 " Toggle Undo Tree
 nnoremap <leader>u :UndotreeToggle<CR>
+
+
+nnoremap <leader>a :lua require("harpoon.mark").add_file()<CR>
+nnoremap <leader><leader> :lua require("harpoon.ui").toggle_quick_menu()<CR>
+
+nnoremap <leader>j :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap <leader>k :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap <leader>l :lua require("harpoon.ui").nav_file(3)<CR>
+nnoremap <leader>; :lua require("harpoon.ui").nav_file(4)<CR>
+
+nnoremap <leader><C-i> :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <leader><C-o> :lua require("harpoon.ui").nav_prev()<CR>
 
 set grepprg=rg\ --vimgrep\ --smart-case\ --follow
