@@ -1,7 +1,7 @@
 [diff]
 	tool = vimdiff
 [user]
-	name = Yareeque
+	name = Yaroslav
 	email = jrslwlkn@gmail.com
 [difftool]
 	prompt = false
@@ -25,4 +25,3 @@
 	res = !git reset --hard
 	p = push origin HEAD
 [pull]
-	rebase = preserve
