@@ -32,12 +32,20 @@ if type rg &> /dev/null; then
 	export FZF_DEFAULT_OPTS='-m --height 50% --border'
 fi
 
+alias ls='ls -G'
+alias ll='ls -lG'
+
 alias vi="nvim"
 
 alias gs="git status"
 alias gl="git log"
+alias ga="git add"
 alias gap="git add -p"
 alias gc="git commit"
 alias gca="git commit --amend"
 alias gcan="git commit --amend --no-edit"
-
+alias gr="git rebase -i"
+alias grc="git rebase --continue"
+alias gra="git rebase --abort"
+alias gp="git pull"
+alias gpr="git pull --rebase"
