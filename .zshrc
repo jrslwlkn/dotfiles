@@ -33,3 +33,11 @@ if type rg &> /dev/null; then
 fi
 
 alias vi="nvim"
+
+alias gs="git status"
+alias gl="git log"
+alias gap="git add -p"
+alias gc="git commit"
+alias gca="git commit --amend"
+alias gcan="git commit --amend --no-edit"
+
