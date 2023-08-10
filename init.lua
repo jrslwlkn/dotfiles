@@ -84,12 +84,14 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
     },
   },
+
+  { 'kevinhwang91/nvim-bqf' },
 
   {
     -- Autocompletion
@@ -344,6 +346,7 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
+vim.keymap.set('n', '<leader>sq', vim.diagnostic.setqflist, { desc = '[S]earch [Q]uickfix List' })
 vim.keymap.set('n', '<leader>sp', require('telescope.builtin').git_files, { desc = '[S]earch Git [P]roject' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
