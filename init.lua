@@ -149,12 +149,14 @@ require('lazy').setup({
       require("onedark").setup {
         style = "darker",
         highlights = {
-          --["@comment"] = { fg = "#d4d4d4" },
+          -- ["@comment"] = { fg = "#d4d4d4" },
         },
         code_style = { comments = "bold" },
       }
       vim.cmd.colorscheme 'onedark'
       vim.api.nvim_set_hl(0, "LineNr", { fg = "#a1a1a1" })
+      vim.api.nvim_set_hl(0, "Comment", { fg = "#c46416" })
+      vim.api.nvim_set_hl(0, "@comment", { link = "Comment" })
     end,
   },
 
@@ -214,10 +216,12 @@ require('lazy').setup({
   },
 
   {
+    -- Show first line of current block up top
     'nvim-treesitter/nvim-treesitter-context',
   },
 
   {
+    -- Tracks all file modification history
     'mbbill/undotree',
     config = function()
       vim.g.undotree_SetFocusWhenToggle = 1
@@ -226,49 +230,39 @@ require('lazy').setup({
   },
 
   {
+    -- Show abosulte lines in insert but relative otherwise
     "sitiom/nvim-numbertoggle"
   },
 
-  {
-    "folke/todo-comments.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {
-      signs = false,
-      highlight = {
-        keyword = "fg",
-      }
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    }
-  },
+  -- {
+  --   "folke/todo-comments.nvim",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   opts = {
+  --     signs = false,
+  --     highlight = {
+  --       keyword = "fg",
+  --     },
+  --     -- your configuration comes here
+  --     -- or leave it empty to use the default settings
+  --     -- refer to the configuration section below
+  --   }
+  -- },
 
   {
     'ThePrimeagen/harpoon'
   },
 
-  -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
-  --       These are some example plugins that I've included in the kickstart repository.
-  --       Uncomment any of the lines below to enable them.
-  --
-  --'kickstart.plugins.autoformat',
-  --'kickstart.plugins.debug',
-
-  -- NOTE: The import below automatically adds your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
-  --    up-to-date with whatever is in the kickstart repo.
-  --
-  --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  --
-  --{ import = 'custom.plugins' },
 }, {})
+
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
--- NOTE: You can change these options as you wish!
+
+vim.o.splitright = true
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
+vim.keymap.set("n", "<ESC>", ":silent nohl<CR>")
 
 -- Make line numbers default
 vim.wo.relativenumber = true
@@ -280,11 +274,6 @@ vim.bo.softtabstop = 4
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
-
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
---vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -335,8 +324,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
-local cursor_pos_group = vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
-  group = cursor_pos_group,
+-- return cursor to where it was last time closing the file
+vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
   desc = 'return cursor to where it was last time closing the file',
   pattern = '*',
   command = 'silent! normal! g`"zv',
@@ -355,34 +344,25 @@ require('telescope').setup {
   },
 }
 
--- local mason_registry = require("mason-registry")
--- local codelldb = mason_registry.get_package("codelldb")
--- local extension_path = codelldb:get_install_path() .. "/extension/"
--- local codelldb_path = extension_path .. "adapter/codelldb"
--- local liblldb_path = extension_path .. "lldb/lib/liblldb.dylib"
-
-local rt = require("rust-tools")
-
-rt.setup({
-  -- dap = {
-  --   adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
-  -- },
-  dap = {
-    adapter = {
-      type = "executable",
-      command = "lldb",
-      name = "rt_lldb",
-    },
-  },
-  server = {
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end,
-  },
-})
+-- Rust debugger setup
+-- local rt = require("rust-tools")
+-- rt.setup({
+--   dap = {
+--     adapter = {
+--       type = "executable",
+--       command = "lldb",
+--       name = "rt_lldb",
+--     },
+--   },
+--   server = {
+--     on_attach = function(_, bufnr)
+--       -- Hover actions
+--       vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+--       -- Code action groups
+--       vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, { buffer = bufnr })
+--     end,
+--   },
+-- })
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
@@ -489,28 +469,24 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
-vim.o.hlsearch = false
-
+-- System clipboard editing config
 vim.keymap.set("n", "x", [["_x]])
 vim.keymap.set("v", "x", [["_x]])
-
 vim.keymap.set("v", "<leader>d", [["_d]])
-
 vim.keymap.set("n", "<leader>c", [["_c]])
 vim.keymap.set("n", "<leader>C", [["_C]])
 vim.keymap.set("v", "<leader>c", [["_c]])
-
 vim.keymap.set("n", "<leader>y", [["*y]])
 vim.keymap.set("v", "<leader>y", [["*y]])
-
 vim.keymap.set("n", "<leader>p", [["*p]])
 vim.keymap.set("n", "<leader>P", [["*P]])
 vim.keymap.set("v", "<leader>p", [["*p]])
 vim.keymap.set("v", "<leader>P", [["*P]])
-
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
+-- Format keymaps
+vim.keymap.set("n", "==", vim.lsp.buf.format)
 vim.keymap.set("v", "=",
   function()
     vim.lsp.buf.format({
@@ -520,8 +496,7 @@ vim.keymap.set("v", "=",
     vim.api.nvim_input('<ESC>')
   end)
 
-vim.keymap.set("n", "==", vim.lsp.buf.format)
-
+-- Debugger keymaps
 vim.keymap.set("n", "<leader>dt", function() require("dapui").toggle() end, { desc = "[D]ebug [T]oggle" })
 vim.keymap.set("n", "<leader>db", ":DapToggleBreakpoint <CR>", { desc = "Set [D]ebug [B]reakpoint" })
 vim.keymap.set("n", "<F5>", ":DapContinue <CR>")
@@ -529,7 +504,6 @@ vim.keymap.set("n", "<F1>", ":DapStepInto <CR>")
 vim.keymap.set("n", "<F2>", ":DapStepOver <CR>")
 vim.keymap.set("n", "<F3>", ":DapStepOut <CR>")
 
---
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
@@ -589,35 +563,7 @@ local servers = {
   },
 }
 
--- require("dap").adapters.lldb = {
--- 	type = "executable",
--- 	command = "/usr/bin/lldb", -- adjust as needed
--- 	name = "lldb",
--- }
---
--- local lldb = {
--- 	name = "Launch lldb",
--- 	type = "lldb", -- matches the adapter
--- 	request = "launch", -- could also attach to a currently running process
--- 	program = function()
--- 		return vim.fn.input(
--- 			"Path to executable: ",
--- 			vim.fn.getcwd() .. "/target/debug/",
--- 			"file"
--- 		)
--- 	end,
--- 	cwd = "${workspaceFolder}",
--- 	stopOnEntry = false,
--- 	args = {},
--- 	runInTerminal = false,
--- }
---
--- require('dap').configurations.rust = {
--- 	lldb -- different debuggers or more configurations can be used here
--- }
-
-require("dapui").setup()
-
+-- Dap and DapUI
 local dap, dapui = require("dap"), require("dapui")
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
@@ -628,12 +574,12 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
---
+dapui.setup()
+
 -- Setup neovim lua configuration
 require('neodev').setup({
   library = { plugins = { "nvim-dap-ui" }, types = true },
 })
-
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
