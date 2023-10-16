@@ -112,6 +112,22 @@ require('lazy').setup({
     },
   },
 
+  {
+    'xbase-lab/xbase',
+    opts = {
+      --run = 'make install',        -- or "make install && make free_space" (not recommended, longer build time)
+      -- config = function()
+      --   require 'xbase'.setup({})  -- see default configuration bellow
+      -- end
+    },
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      -- "nvim-telescope/telescope.nvim", -- optional
+      -- "nvim-lua/plenary.nvim", -- optional/requirement of telescope.nvim
+      -- "stevearc/dressing.nvim", -- optional (in case you don't use telescope but something else)
+    },
+  },
+
   'neovim/nvim-lspconfig',
   'simrat39/rust-tools.nvim',
 
@@ -148,15 +164,15 @@ require('lazy').setup({
     config = function()
       require("onedark").setup {
         style = "darker",
-        highlights = {
-          -- ["@comment"] = { fg = "#d4d4d4" },
-        },
+        -- highlights = {
+        --   ["@comment"] = { fg = "#d4d4d4" },
+        -- },
         code_style = { comments = "bold" },
       }
       vim.cmd.colorscheme 'onedark'
       vim.api.nvim_set_hl(0, "LineNr", { fg = "#a1a1a1" })
-      vim.api.nvim_set_hl(0, "Comment", { fg = "#c46416" })
-      vim.api.nvim_set_hl(0, "@comment", { link = "Comment" })
+      -- vim.api.nvim_set_hl(0, "Comment", { fg = "#c46416" })
+      -- vim.api.nvim_set_hl(0, "@comment", { link = "Comment" })
     end,
   },
 
@@ -174,7 +190,9 @@ require('lazy').setup({
     },
   },
 
-  { "rcarriga/nvim-dap-ui",          dependencies = { "mfussenegger/nvim-dap" } },
+  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap" } },
+
+  { "leoluz/nvim-dap-go" },
 
   -- {
   --   -- Add indentation guides even on blank lines
@@ -188,10 +206,18 @@ require('lazy').setup({
   -- },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',         opts = {} },
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      toggler = {
+        line = 'gc',
+        block = 'gbc',
+      },
+    }
+  },
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim', branch = '0.1.x',                          dependencies = { 'nvim-lua/plenary.nvim' } },
+  { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
   -- Only load if `make` is available. Make sure you have the system
@@ -254,6 +280,44 @@ require('lazy').setup({
 
 }, {})
 
+require('dap-go').setup {
+  -- Additional dap configurations can be added.
+  -- dap_configurations accepts a list of tables where each entry
+  -- represents a dap configuration. For more details do:
+  -- :help dap-configuration
+  dap_configurations = {
+    {
+      -- Must be "go" or it will be ignored by the plugin
+      type = "go",
+      name = "Attach remote",
+      mode = "remote",
+      request = "attach",
+    },
+  },
+  -- delve configurations
+  delve = {
+    -- the path to the executable dlv which will be used for debugging.
+    -- by default, this is the "dlv" executable on your PATH.
+    path = "dlv",
+    -- time to wait for delve to initialize the debug session.
+    -- default to 20 seconds
+    initialize_timeout_sec = 20,
+    -- a string that defines the port to start delve debugger.
+    -- default to string "${port}" which instructs nvim-dap
+    -- to start the process in a random available port
+    port = "${port}",
+    -- additional args to pass to dlv
+    args = {},
+    -- the build flags that are passed to delve.
+    -- defaults to empty string, but can be used to provide flags
+    -- such as "-tags=unit" to make sure the test suite is
+    -- compiled during debugging, for example.
+    -- passing build flags using args is ineffective, as those are
+    -- ignored by delve in dap mode.
+    build_flags = "",
+  },
+}
+
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -262,7 +326,7 @@ vim.o.splitright = true
 
 -- Set highlight on search
 vim.o.hlsearch = true
-vim.keymap.set("n", "<ESC>", ":silent nohl<CR>")
+vim.keymap.set("n", "<ESC>", ":nohl<CR>")
 
 -- Make line numbers default
 vim.wo.relativenumber = true
@@ -328,7 +392,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
   desc = 'return cursor to where it was last time closing the file',
   pattern = '*',
-  command = 'silent! normal! g`"zv',
+  command = 'silent normal! g`"zv',
 })
 
 -- [[ Configure Telescope ]]
@@ -368,26 +432,34 @@ require('telescope').setup {
 pcall(require('telescope').load_extension, 'fzf')
 
 -- See `:help telescope.builtin`
+vim.keymap.set('n', '<leader>t', require('telescope.builtin').resume, { desc = '[T]elescope Resume' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader><space>', require('telescope.builtin').commands, { desc = '[ ] Find available commands' })
 vim.keymap.set('n', '<leader>/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
+    winblend = 0,
     previewer = false,
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-vim.keymap.set('n', '<leader>sq', vim.diagnostic.setqflist, { desc = '[S]earch [Q]uickfix List' })
 vim.keymap.set('n', 'g?', vim.diagnostic.open_float, { desc = 'Show diagnostic message on current line' })
+
+vim.keymap.set('n', '<C-q>', function() vim.cmd('copen') end, { desc = 'Open Quickfix' })
+
+vim.keymap.set('n', '<leader>sq', require('telescope.builtin').quickfix, { desc = '[S]earch [Q]uickfix List' })
 vim.keymap.set('n', '<leader>sp', require('telescope.builtin').git_files, { desc = '[S]earch Git [P]roject' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>t', require('telescope.builtin').resume, { desc = '[T]elescope Resume' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>sk', require('telescope.builtin').keymaps, { desc = '[S]earch [K]keymaps' })
+vim.keymap.set('n', '<leader>sj', require('telescope.builtin').jumplist, { desc = '[S]earch [J]umplist' })
+vim.keymap.set('n', '<leader>sr', require('telescope.builtin').lsp_references, { desc = '[S]earch [R]eferences' })
+vim.keymap.set('n', '<leader>st', vim.cmd.Telescope, { desc = '[S]earch [T]elescope' })
 vim.keymap.set('n', '<leader>su', vim.cmd.UndotreeToggle, { desc = '[S]ee [U]ndo History' })
+vim.keymap.set('n', '<leader>sm', vim.cmd.Mason, { desc = '[S]earch [M]ason' })
 
 vim.keymap.set("n", "<leader>a", require("harpoon.mark").add_file, { desc = '[A]dd file to Harpoon' })
 vim.keymap.set("n", "<leader>sa", require("harpoon.ui").toggle_quick_menu, { desc = '[S]ee H[a]rpoon' })
@@ -523,9 +595,9 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-  nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+  -- nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+  nmap('<leader>sl', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')

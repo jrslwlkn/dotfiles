@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$1" = "up" ]; then
-	cp .gitconfig .zshrc .zprofile ~/
+	cp .gitconfig .zshrc .zprofile ~/.
 	cp init.lua ~/.config/nvim/
 	source ~/.zprofile & source ~/.zshrc & wait
 elif [ "$1" = "down" ]; then
