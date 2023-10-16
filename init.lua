@@ -326,7 +326,7 @@ vim.o.splitright = true
 
 -- Set highlight on search
 vim.o.hlsearch = true
-vim.keymap.set("n", "<ESC>", ":nohl<CR>")
+vim.keymap.set("n", "<ESC>", ":nohl<CR>", { expr = false, silent = true })
 
 -- Make line numbers default
 vim.wo.relativenumber = true
@@ -372,6 +372,8 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set('n', '<C-k>', ":cn<CR>", { expr = false, silent = true })
+vim.keymap.set('n', '<C-j>', ":cp<CR>", { expr = false, silent = true })
 
 vim.api.nvim_exec2([[
   autocmd BufEnter * set tabstop=4
