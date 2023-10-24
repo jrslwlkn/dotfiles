@@ -282,6 +282,26 @@ require('lazy').setup({
     'ThePrimeagen/harpoon'
   },
 
+  {
+    "aaronhallaert/advanced-git-search.nvim",
+    config = function()
+      -- optional: setup telescope before loading the extension
+      require("telescope").setup {
+        -- move this to the place where you call the telescope setup function
+        extensions = {
+          advanced_git_search = {
+            -- See Config
+          }
+        }
+      }
+
+      require("telescope").load_extension("advanced_git_search")
+    end,
+    dependencies = {
+      --- See dependencies
+    },
+  }
+
 }, {})
 
 require('dap-go').setup {
@@ -323,13 +343,14 @@ require('dap-go').setup {
 }
 
 require("gruvbox").setup({
-    overrides = {
-        Comment = {fg = "#00FF08"}
-    }
+  overrides = {
+    Comment = { fg = "#00FF08" }
+  }
 })
 
 vim.o.background = "dark" -- or "light" for light mode
 vim.cmd([[colorscheme gruvbox]])
+vim.o.cursorline = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
