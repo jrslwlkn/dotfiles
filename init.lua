@@ -304,6 +304,11 @@ require('lazy').setup({
 
 }, {})
 
+vim.keymap.set('n', '<leader>gg', ":AdvancedGitSearch search_log_content<CR>", { silent = true, desc = '[G]it Log Search' })
+vim.keymap.set('n', '<leader>gd', ":AdvancedGitSearch diff_commit_file<CR>", { silent = true, desc = '[G]it [D]iff Current File' })
+vim.keymap.set('n', '<leader>gh', ":AdvancedGitSearch search_log_content_file<CR>", { silent = true, desc = '[G]it [H]istory Search' })
+vim.keymap.set('v', '<leader>gl', ":AdvancedGitSearch diff_commit_line<CR>", { silent = true, desc = '[G]it [L]ines History Search' })
+
 require('dap-go').setup {
   -- Additional dap configurations can be added.
   -- dap_configurations accepts a list of tables where each entry
