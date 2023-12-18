@@ -41,6 +41,11 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -412,10 +417,6 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set('n', '<C-k>', ":cn<CR>", { expr = false, silent = true })
 vim.keymap.set('n', '<C-j>', ":cp<CR>", { expr = false, silent = true })
-
-vim.api.nvim_exec2([[
-  autocmd BufEnter * set tabstop=4
-]], {})
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
