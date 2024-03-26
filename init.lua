@@ -148,7 +148,7 @@ require('lazy').setup({
 
     {
         "rcarriga/nvim-dap-ui",
-        dependencies = { "mfussenegger/nvim-dap" }
+        dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" }
     },
 
     {
@@ -237,7 +237,9 @@ require('lazy').setup({
     },
 
     {
-        'ThePrimeagen/harpoon'
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { {"nvim-lua/plenary.nvim"} }
     },
 
     {
@@ -464,14 +466,36 @@ vim.keymap.set('n', '<leader>st', vim.cmd.Telescope, { desc = '[S]earch [T]elesc
 vim.keymap.set('n', '<leader>su', vim.cmd.UndotreeToggle, { desc = '[S]ee [U]ndo History' })
 vim.keymap.set('n', '<leader>sm', vim.cmd.Mason, { desc = '[S]earch [M]ason' })
 
-vim.keymap.set("n", "<leader>a", require("harpoon.mark").add_file, { desc = '[A]dd file to Harpoon' })
-vim.keymap.set("n", "<leader>sa", require("harpoon.ui").toggle_quick_menu, { desc = '[S]how H[a]rpoon Files' })
+local harpoon = require("harpoon")
+harpoon:setup()
 
-vim.keymap.set("n", "<leader>j", function() require("harpoon.ui").nav_file(1) end)
-vim.keymap.set("n", "<leader>k", function() require("harpoon.ui").nav_file(2) end)
-vim.keymap.set("n", "<leader>l", function() require("harpoon.ui").nav_file(3) end)
-vim.keymap.set("n", "<leader>;", function() require("harpoon.ui").nav_file(4) end)
-vim.keymap.set("n", "<leader>'", function() require("harpoon.ui").nav_file(5) end)
+vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end, { desc = '[A]dd file to Harpoon' })
+vim.keymap.set("n", "<leader>sa", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = '[S]how H[a]rpoon Files' })
+
+vim.keymap.set("n", "<leader>j", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<leader>k", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<leader>l", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<leader>;", function() harpoon:list():select(4) end)
+vim.keymap.set("n", "<leader>'", function() harpoon:list():select(5) end)
+
+vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end, { desc = 'Harpoon [P]rev' })
+vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end, { desc = 'Harpoon [N]ext' })
+
+
+function ToggleKeymap()
+    -- Check if the Ukrainian keymap is already set
+    if vim.api.nvim_get_option('keymap') == 'ukrainian' then
+        -- If it is, clear the keymap to revert to the default
+        vim.api.nvim_command('set keymap=')
+    else
+        -- If it's not, set the keymap to Ukrainian
+        vim.api.nvim_command('set keymap=ukrainian')
+    end
+end
+
+-- Bind the toggle function to a key, e.g., <F2>
+vim.api.nvim_set_keymap('n', '<F12>', ':lua ToggleKeymap()<CR>', {noremap = true, silent = true})
+
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -479,7 +503,7 @@ require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {
         'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'javascript', 'ocaml', 'vimdoc',
-        'vim', 'html', 'css',
+        'vim', 'html', 'css', 'bash', 'sql'
     },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)

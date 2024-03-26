@@ -8,6 +8,8 @@ setopt HIST_FIND_NO_DUPS
 #setopt HIST_IGNORE_ALL_DUPS
 setopt histignoredups
 
+export PATH=$PATH:$HOME/go/bin
+
 bindkey -v
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -49,3 +51,4 @@ alias grc="git rebase --continue"
 alias gra="git rebase --abort"
 alias gp="git pull"
 alias gpr="git pull --rebase"
+___MY_VMOPTIONS_SHELL_FILE="${HOME}/.jetbrains.vmoptions.sh"; if [ -f "${___MY_VMOPTIONS_SHELL_FILE}" ]; then . "${___MY_VMOPTIONS_SHELL_FILE}"; fi

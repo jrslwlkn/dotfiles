@@ -1,5 +1,7 @@
 [diff]
 	tool = vimdiff
+[core]
+	editor = nvim
 [user]
 	name = Yaroslav
 	email = jrslwlkn@gmail.com
