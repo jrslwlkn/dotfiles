@@ -62,7 +62,7 @@ require('lazy').setup({
     },
 
     -- better quickfix menu
-    { 'kevinhwang91/nvim-bqf' },
+    'kevinhwang91/nvim-bqf',
 
     {
         -- Autocompletion
@@ -102,7 +102,7 @@ require('lazy').setup({
     'simrat39/rust-tools.nvim',
 
     -- Useful plugin to show you pending keybinds.
-    { 'folke/which-key.nvim', opts = {} },
+    'folke/which-key.nvim',
 
     {
         -- Adds git releated signs to the gutter, as well as utilities for managing changes
@@ -128,7 +128,7 @@ require('lazy').setup({
     },
 
     -- color scheme
-    { "ellisonleao/gruvbox.nvim",           priority = 1000, config = true },
+    { "ellisonleao/gruvbox.nvim", priority = 1000, config = true },
 
     {
         -- Set lualine as statusline
@@ -199,7 +199,6 @@ require('lazy').setup({
         "jay-babu/mason-nvim-dap.nvim",
         opts = {
             -- This line is essential to making automatic installation work
-            -- :exploding-brain
             handlers = {},
             automatic_installation = {
                 -- These will be configured by separate plugins.
@@ -263,18 +262,7 @@ require('lazy').setup({
         },
     },
 
-    { 'Weissle/persistent-breakpoints.nvim' },
-
-    -- {
-    --   -- Add indentation guides even on blank lines
-    --   'lukas-reineke/indent-blankline.nvim',
-    --   -- Enable `lukas-reineke/indent-blankline.nvim`
-    --   -- See `:help indent_blankline.txt`
-    --   opts = {
-    --     char = '┊',
-    --     show_trailing_blankline_indent = false,
-    --   },
-    -- },
+    'Weissle/persistent-breakpoints.nvim',
 
     -- "gc" to comment visual regions/lines
     {
@@ -288,7 +276,11 @@ require('lazy').setup({
     },
 
     -- Fuzzy Finder (files, lsp, etc)
-    { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
+    {
+        'nvim-telescope/telescope.nvim',
+        branch = '0.1.x',
+        dependencies = { 'nvim-lua/plenary.nvim' }
+    },
 
     -- Fuzzy Finder Algorithm which requires local dependencies to be built.
     -- Only load if `make` is available. Make sure you have the system
@@ -312,10 +304,8 @@ require('lazy').setup({
         build = ':TSUpdate',
     },
 
-    {
-        -- Show first line (block context) of current block up top
-        'nvim-treesitter/nvim-treesitter-context',
-    },
+    -- Show first line (block context) of current block up top
+    'nvim-treesitter/nvim-treesitter-context',
 
     {
         -- Tracks all file modification history
@@ -326,10 +316,8 @@ require('lazy').setup({
 
     },
 
-    {
-        -- Show abosulte lines in insert but relative otherwise
-        "sitiom/nvim-numbertoggle"
-    },
+    -- Show abosulte lines in insert but relative otherwise
+    "sitiom/nvim-numbertoggle",
 
     {
         -- Highlight TODO: NOTE: FIXME: HACK: etc.
@@ -373,8 +361,15 @@ require('lazy').setup({
     },
 
     {
-        "mg979/vim-visual-multi",
+        "mvolkmann/todo-quickfix.nvim",
+        -- lazy = false, -- load on startup, not just when required
+        -- config = true -- require the plugin and call its setup function
     },
+
+    -- multi cursors
+    -- see https://github.com/mg979/vim-visual-multi
+    -- select with Ctrl+n, go next/prev with n/N and [ / ], skip/delete with q/Q
+    "mg979/vim-visual-multi",
 
     {
         "ray-x/go.nvim",
@@ -398,11 +393,11 @@ require('lazy').setup({
         -- this is equivalent to setup({}) function
     },
 
-    {
-        'norcalli/nvim-colorizer.lua'
-    },
+    -- displays colors for hex values
+    'norcalli/nvim-colorizer.lua',
 
     {
+        -- format on save
         'stevearc/conform.nvim',
         opts = {
             notify_on_error = false,
@@ -413,38 +408,79 @@ require('lazy').setup({
         },
     },
 
-    {
-        'Hoffs/omnisharp-extended-lsp.nvim',
-        -- lazy = true,
-    },
+    -- allows navigating into internal CLR definitions (not really)
+    'Hoffs/omnisharp-extended-lsp.nvim',
 
 }, {})
 
-vim.keymap.set('n', '<leader>gb', ":G blame<cr>",
-    { silent = true, desc = '[G]it [B]lame' })
-vim.keymap.set('n', '<leader>gl', ":G log<cr>",
-    { silent = true, desc = '[G]it [L]og' })
-vim.keymap.set('n', '<leader>gaa', ":G add %<cr>",
-    { silent = true, desc = '[G]it [A]dd Current File' })
-vim.keymap.set('n', '<leader>Gap', ":G add -p<cr>",
-    { silent = true, desc = '[G]it [A]dd [P]atch' })
-vim.keymap.set('n', '<leader>gs', ":G s<cr>",
-    { silent = true, desc = '[G]it [S]tatus' })
-vim.keymap.set('n', '<leader>gk', ":G commit<cr>",
-    { silent = true, desc = '[G]it Commit' })
-vim.keymap.set('n', '<leader>gg', ":advancedgitsearch search_log_content<cr>",
+
+-- moving line/block with Alt + j/k
+local opts = { noremap = true, silent = true }
+vim.keymap.set('n', '<A-j>', ':m .+1<CR>==', opts)
+vim.keymap.set('n', '<A-k>', ':m .-2<CR>==', opts)
+vim.keymap.set('i', '<A-j>', '<Esc>:m .+1<CR>==gi', opts)
+vim.keymap.set('i', '<A-k>', '<Esc>:m .-2<CR>==gi', opts)
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", opts)
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", opts)
+
+
+-- git bindings
+vim.keymap.set('n', '<leader>gb', ":G blame<CR>", { silent = true, desc = '[G]it [B]lame' })
+vim.keymap.set('n', '<leader>gl', ":G log<CR>", { silent = true, desc = '[G]it [L]og' })
+vim.keymap.set('n', '<leader>gaa', ":G add %<CR>", { silent = true, desc = '[G]it [A]dd Current File' })
+vim.keymap.set('n', '<leader>gap', ":G add -p<CR>", { silent = true, desc = '[G]it [A]dd [P]atch' })
+vim.keymap.set('n', '<leader>gs', ":G s<CR>", { silent = true, desc = '[G]it [S]tatus' })
+vim.keymap.set('n', '<leader>gk', ":G commit<CR>", { silent = true, desc = '[G]it Commit' })
+vim.keymap.set('n', '<leader>gg', ":advancedgitsearch search_log_content<CR>",
     { silent = true, desc = '[G]it Log Search' })
-vim.keymap.set('n', '<leader>gd', ":G diff<CR>",
-    { silent = true, desc = '[G]it [D]iff' })
+vim.keymap.set('n', '<leader>gd', ":G diff<CR>", { silent = true, desc = '[G]it [D]iff' })
 vim.keymap.set('n', '<leader>gh', ":AdvancedGitSearch search_log_content_file<CR>",
     { silent = true, desc = '[G]it [H]istory Search' })
 vim.keymap.set('v', '<leader>g/', ":AdvancedGitSearch diff_commit_line<CR>",
     { silent = true, desc = '[G]it Line History Search' })
 
-require('persistent-breakpoints').setup {
-    load_breakpoints_event = { "BufReadPost" }
-}
 
+-- Debugger setup
+local dap = require('dap')
+
+dap.adapters.go = {
+    type = 'executable',
+    command = 'node',
+    args = { os.getenv('HOME') .. '/vscode-go/extension/dist/debugAdapter.js' },
+}
+dap.adapters.coreclr = {
+    type = 'executable',
+    command = '/Users/yareque/netcoredbg/bin/netcoredbg',
+    args = { '--interpreter=vscode' }
+}
+dap.configurations.cs = {
+    {
+        type = "coreclr",
+        name = "launch - netcoredbg",
+        request = "launch",
+        program = function()
+            -- Automatically detects DLL in Debug folder
+            local cwd = vim.fn.getcwd()
+            local dll = vim.fn.glob(cwd .. '/bin/Debug/**/*.dll', true, true)[1]
+            if dll ~= nil and dll ~= '' then
+                return dll
+            else
+                return vim.fn.input('Path to dll: ', vim.fn.getcwd(), 'file')
+                -- error('Could not find DLL in bin/Debug folder')
+            end
+        end,
+    },
+}
+dap.configurations.go = {
+    {
+        type = 'go',
+        name = 'Debug',
+        request = 'launch',
+        showLog = false,
+        program = "${file}",
+        dlvToolPath = vim.fn.exepath('dlv') -- Adjust to where delve is installed
+    },
+}
 require('dap-go').setup {
     -- Additional dap configurations can be added.
     -- dap_configurations accepts a list of tables where each entry
@@ -459,7 +495,7 @@ require('dap-go').setup {
             request = "attach",
         },
     },
-    -- delve configurations
+    -- delve configurations (debugger for golang)
     delve = {
         -- the path to the executable dlv which will be used for debugging.
         -- by default, this is the "dlv" executable on your PATH.
@@ -483,6 +519,23 @@ require('dap-go').setup {
     },
 }
 
+-- clear debugger repl at the end
+vim.api.nvim_create_autocmd("User", {
+    pattern = "DapTerminated",
+    callback = function()
+        local repl_buf = vim.fn.bufnr("[dap-repl]")
+        if repl_buf ~= -1 then
+            vim.api.nvim_buf_set_lines(repl_buf, 0, -1, false, {})
+        end
+    end
+})
+
+require('persistent-breakpoints').setup({
+    load_breakpoints_event = { "BufReadPost" }
+})
+
+
+-- color scheme
 require("gruvbox").setup({
     overrides = {
         Comment = { fg = "#0FF111" },
@@ -496,8 +549,6 @@ require("gruvbox").setup({
     },
     contrast = "hard"
 })
-
-vim.lsp.util.make_position_params(0, 'utf-8')
 
 vim.o.background = "dark" -- or "light" for light mode
 vim.cmd([[colorscheme gruvbox]])
@@ -555,9 +606,10 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set('n', '<C-k>', ":cn<CR>", { expr = false, silent = true })
 vim.keymap.set('n', '<C-j>', ":cp<CR>", { expr = false, silent = true })
 
-require 'colorizer'.setup()
+-- Shows colors of hex values
+require('colorizer').setup()
 
--- [[ Highlight on yank ]]
+-- Highlight on yank
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -566,16 +618,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
     group = highlight_group,
     pattern = '*',
-})
-
-vim.api.nvim_create_autocmd("User", {
-    pattern = "DapTerminated",
-    callback = function()
-        local repl_buf = vim.fn.bufnr("[dap-repl]")
-        if repl_buf ~= -1 then
-            vim.api.nvim_buf_set_lines(repl_buf, 0, -1, false, {})
-        end
-    end
 })
 
 -- return cursor to where it was last time closing the file
@@ -598,72 +640,10 @@ require('telescope').setup {
     },
 }
 
-local dap = require('dap')
-
-dap.adapters.go = {
-    type = 'executable',
-    command = 'node',
-    args = { os.getenv('HOME') .. '/vscode-go/extension/dist/debugAdapter.js' },
-}
-dap.configurations.go = {
-    {
-        type = 'go',
-        name = 'Debug',
-        request = 'launch',
-        showLog = false,
-        program = "${file}",
-        dlvToolPath = vim.fn.exepath('dlv') -- Adjust to where delve is installed
-    },
-}
-
-dap.adapters.coreclr = {
-    type = 'executable',
-    command = '/Users/yareque/netcoredbg/bin/netcoredbg',
-    args = { '--interpreter=vscode' }
-}
-dap.configurations.cs = {
-    {
-        type = "coreclr",
-        name = "launch - netcoredbg",
-        request = "launch",
-        program = function()
-            -- Automatically detects DLL in Debug folder
-            local cwd = vim.fn.getcwd()
-            local dll = vim.fn.glob(cwd .. '/bin/Debug/**/*.dll', true, true)[1]
-            if dll ~= nil and dll ~= '' then
-                return dll
-            else
-                return vim.fn.input('Path to dll: ', vim.fn.getcwd(), 'file')
-                -- error('Could not find DLL in bin/Debug folder')
-            end
-        end,
-    },
-}
-
--- Rust debugger setup
--- local rt = require("rust-tools")
--- rt.setup({
---   dap = {
---     adapter = {
---       type = "executable",
---       command = "lldb",
---       name = "rt_lldb",
---     },
---   },
---   server = {
---     on_attach = function(_, bufnr)
---       -- Hover actions
---       vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
---       -- Code action groups
---       vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, { buffer = bufnr })
---     end,
---   },
--- })
-
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 
--- See `:help telescope.builtin`
+-- See `:help telescope.builthttps://www.youtube.com/shorts/1GDkSJ8HSm8in`
 vim.keymap.set('n', '<leader>t', require('telescope.builtin').resume, { desc = '[T]elescope Resume' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').commands, { desc = '[ ] Find available commands' })
@@ -686,9 +666,9 @@ local function telescope_live_grep_open_files()
     }
 end
 vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
--- TODO: find something for this nice shortcut
--- vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
+vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
 vim.keymap.set('n', '<leader>sq', require('telescope.builtin').quickfix, { desc = '[S]earch [Q]uickfix List' })
+vim.keymap.set('n', '<leader>so', ':TodoQF<CR>', { silent = true, desc = '[S]earch T[O]DOs' })
 vim.keymap.set('n', '<leader>sp', require('telescope.builtin').git_files, { desc = '[S]earch Git [P]roject' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
@@ -702,6 +682,8 @@ vim.keymap.set('n', '<leader>st', vim.cmd.Telescope, { desc = '[S]earch [T]elesc
 vim.keymap.set('n', '<leader>su', vim.cmd.UndotreeToggle, { desc = '[S]ee [U]ndo History' })
 vim.keymap.set('n', '<leader>sm', vim.cmd.Mason, { desc = '[S]earch [M]ason' })
 
+
+-- Harpoon for switching between files
 local harpoon = require("harpoon")
 harpoon:setup()
 
@@ -719,19 +701,15 @@ vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end, { desc = 'H
 vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end, { desc = 'Harpoon [N]ext' })
 
 
-function ToggleKeymap()
-    -- Check if the Ukrainian keymap is already set
-    if vim.api.nvim_get_option('keymap') == 'ukrainian' then
-        -- If it is, clear the keymap to revert to the default
-        vim.api.nvim_command('set keymap=')
-    else
-        -- If it's not, set the keymap to Ukrainian
-        vim.api.nvim_command('set keymap=ukrainian')
-    end
-end
-
--- Bind the toggle function to a key, e.g., <F2>
-vim.api.nvim_set_keymap('n', '<F12>', ':lua ToggleKeymap()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<F12>',
+    function()
+        if vim.api.nvim_get_option('keymap') == 'ukrainian' then
+            vim.api.nvim_command('set keymap=')
+        else
+            vim.api.nvim_command('set keymap=ukrainian')
+        end
+    end,
+    { noremap = true, silent = true })
 
 
 -- [[ Configure Treesitter ]]
@@ -806,7 +784,9 @@ require('nvim-treesitter.configs').setup {
 -- Inlay Hints
 vim.lsp.inlay_hint.enable(false)
 vim.keymap.set("n", '<leader>i',
-    function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end)
+    function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end)
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
@@ -824,7 +804,7 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- System clipboard editing config
+-- System clipboard bindings
 vim.keymap.set("n", "x", [["_x]])
 vim.keymap.set("v", "x", [["_x]])
 vim.keymap.set("v", "<leader>d", [["_d]])
@@ -853,9 +833,6 @@ vim.keymap.set("n", "<F5>", function()
     require('dapui').toggle({})
     require('dap').continue()
 end)
--- vim.keymap.set("n", "<F1>", ":DapStepInto <CR>")
--- vim.keymap.set("n", "<F2>", ":DapStepOver <CR>")
--- vim.keymap.set("n", "<F3>", ":DapStepOut <CR>")
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
@@ -874,7 +851,7 @@ local on_attach = function(_, bufnr)
     end
     nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
     nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-    nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+    nmap('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
     nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
     nmap('<leader>ds', vim.lsp.buf.document_symbol, '[D]ocument [S]ymbols')
     nmap('<leader>sl', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace [S]ymbols')
@@ -891,7 +868,6 @@ local on_attach = function(_, bufnr)
     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
         vim.lsp.buf.format()
     end, { desc = 'Format current buffer with LSP' })
-    -- nmap('<F15>', require('persistent-breakpoints.api').clear_all_breakpoints)
 end
 
 -- Enable the following language servers
@@ -900,28 +876,71 @@ end
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
-    clangd = {},
-    -- gopls = {
-    -- hint = { enable = true },
-    -- },
-    -- pyright = {},
-    -- rust_analyzer = {},
-    -- tsserver = {},
-
+    clangd = {
+        cmd = { '/usr/bin/clangd' },
+        flags = {
+            debounce_text_changes = 150
+        }
+    },
+    gopls = {
+        settings = {
+            gopls = {
+                hints = {
+                    assignVariableTypes = true,
+                    compositeLiteralFields = true,
+                    compositeLiteralTypes = true,
+                    constantValues = true,
+                    functionTypeParameters = true,
+                    parameterNames = true,
+                    rangeVariableTypes = true,
+                }
+            }
+        }
+    },
     lua_ls = {
-        Lua = {
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
-            hint = { enable = true },
+        settings = {
+            Lua = {
+                workspace = { checkThirdParty = false },
+                telemetry = { enable = false },
+                hint = { enable = true },
+            },
+        }
+    },
+    csharp_ls = {
+        -- this LSP is too chatty so we need to make it stfu
+        handlers = {
+            ['window/logMessage'] = function() end,
+            ['window/showMessage'] = function() end,
         },
+        on_attach = function() end,
+    },
+    omnisharp = {
+        enable_import_completion = true,
+        on_attach = function()
+            vim.keymap.set('n', 'gd', ":lua require('omnisharp_extended').lsp_definition()<CR>", { silent = true })
+            vim.keymap.set('n', 'gD', ":lua require('omnisharp_extended').lsp_type_declaration()<CR>", { silent = true })
+            vim.keymap.set('n', 'gr', ":lua require('omnisharp_extended').lsp_references()<CR>", { silent = true })
+            vim.keymap.set('n', 'gI', ":lua require('omnisharp_extended').lsp_implementation()<CR>", { silent = true })
+        end,
+    },
+    html = {
+        filetypes = { "html", "templ" }
+    },
+    thmx = {
+        filetypes = { "html", "templ" }
+    },
+    templ = {
+        filetypes = { "html", "templ" }
     },
 }
+
+vim.filetype.add({ extension = { templ = "templ" } })
 
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
 vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder)
 vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder)
-vim.keymap.set('n', '<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end)
+vim.keymap.set('n', '<leader>wl', vim.lsp.buf.list_workspace_folders)
 
 -- Setup neovim lua configuration
 require('neodev').setup({
@@ -932,93 +951,28 @@ require('neodev').setup({
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
--- Ensure the servers above are installed
-local mason_lspconfig = require 'mason-lspconfig'
-
-mason_lspconfig.setup {
-    ensure_installed = vim.tbl_keys(servers),
-}
-
-mason_lspconfig.setup_handlers {
-    function(server_name)
-        require('lspconfig')[server_name].setup {
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = servers[server_name],
-        }
-    end,
-}
-
-require('lspconfig').gopls.setup {
-    capabilities = capabilities,
-    settings = {
-        gopls = {
-            hints = {
-                assignVariableTypes = true,
-                compositeLiteralFields = true,
-                compositeLiteralTypes = true,
-                constantValues = true,
-                functionTypeParameters = true,
-                parameterNames = true,
-                rangeVariableTypes = true,
-            }
-        }
-    }
-}
-
-require('lspconfig').omnisharp.setup({
-    capabilities = capabilities,
-    enable_import_completion = true,
-    on_attach = function()
-        vim.keymap.set('n', 'gd', ":lua require('omnisharp_extended').lsp_definition()<CR>", { silent = true })
-        vim.keymap.set('n', 'gD', ":lua require('omnisharp_extended').lsp_type_declaration()<CR>", { silent = true })
-        vim.keymap.set('n', 'gr', ":lua require('omnisharp_extended').lsp_references()<CR>", { silent = true })
-        vim.keymap.set('n', 'gI', ":lua require('omnisharp_extended').lsp_implementation()<CR>", { silent = true })
-    end,
-})
-
-require('lspconfig').csharp_ls.setup {
-    capabilities = capabilities,
+require('mason-lspconfig').setup {
+    ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+    automatic_installation = true,
     handlers = {
-        ['window/logMessage'] = function() end,
-        ['window/showMessage'] = function() end,
+        function(server_name)
+            local server = servers[server_name] or {}
+            -- This handles overriding only values explicitly passed
+            -- by the server configuration above. Useful when disabling
+            -- certain features of an LSP (for example, turning off formatting for ts_ls)
+            server.on_attach = server.on_attach or on_attach
+            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            require('lspconfig')[server_name].setup(server)
+        end,
     },
-}
-
-vim.filetype.add({ extension = { templ = "templ" } })
-
-require('lspconfig').html.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-    filetypes = { "html", "templ" }
-})
-
-require('lspconfig').htmx.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-    filetypes = { "html", "templ" }
-})
-
-require('lspconfig').templ.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-    filetypes = { "html", "templ" }
-})
-
-require('lspconfig')['clangd'].setup {
-    on_attach = on_attach,
-    cmd = { '/usr/bin/clangd' },
-    flags = {
-        debounce_text_changes = 150
-    }
 }
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
+local cmp = require('cmp')
+local luasnip = require('luasnip')
 require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup {}
+luasnip.config.setup({})
 
 cmp.setup {
     snippet = {
