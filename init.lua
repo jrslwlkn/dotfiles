@@ -474,11 +474,10 @@ dap.configurations.cs = {
 dap.configurations.go = {
     {
         type = 'go',
-        name = 'Debug',
+        name = 'Debug Main Package',
         request = 'launch',
-        showLog = false,
-        program = "${file}",
-        dlvToolPath = vim.fn.exepath('dlv') -- Adjust to where delve is installed
+        program = "${workspaceFolder}",
+        dlvToolPath = vim.fn.exepath('dlv')
     },
 }
 require('dap-go').setup {
@@ -486,15 +485,21 @@ require('dap-go').setup {
     -- dap_configurations accepts a list of tables where each entry
     -- represents a dap configuration. For more details do:
     -- :help dap-configuration
-    dap_configurations = {
-        {
-            -- Must be "go" or it will be ignored by the plugin
-            type = "go",
-            name = "Attach remote",
-            mode = "remote",
-            request = "attach",
-        },
-    },
+    -- dap_configurations = {
+    --     {
+    --         -- Must be "go" or it will be ignored by the plugin
+    --         type = "go",
+    --         name = "Attach remote",
+    --         mode = "remote",
+    --         request = "attach",
+    --     },
+    --     {
+    --         type = 'go',
+    --         name = 'Debug',
+    --         mode = 'launch',
+    --         program = "${file}",
+    --     },
+    -- },
     -- delve configurations (debugger for golang)
     delve = {
         -- the path to the executable dlv which will be used for debugging.
@@ -533,7 +538,6 @@ vim.api.nvim_create_autocmd("User", {
 require('persistent-breakpoints').setup({
     load_breakpoints_event = { "BufReadPost" }
 })
-
 
 -- color scheme
 require("gruvbox").setup({
@@ -828,10 +832,9 @@ vim.keymap.set("v", "=", function()
 end, { silent = true })
 
 -- Debugger keymaps
--- vim.keymap.set("n", "<leader>db", ":DapToggleBreakpoint <CR>", { desc = "Set [D]ebug [B]reakpoint" })
 vim.keymap.set("n", "<F5>", function()
     require('dapui').toggle({})
-    require('dap').continue()
+    require('dap').run(require('dap').configurations.go[1])
 end)
 
 -- [[ Configure LSP ]]
