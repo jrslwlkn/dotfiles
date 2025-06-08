@@ -1,0 +1,63 @@
+Plug 'machakann/vim-highlightedyank' " Highlight copied text
+Plug 'tpope/vim-surround'            " Delete/change/add parentheses/quotes/XML-tags/much more with ease
+" Plug 'preservim/nerdtree'            " NERDTree
+" Plug 'justinmk/vim-sneak'            " More efficient jumps than f/F
+
+set scrolloff=5          " Minimal number of lines above and below the cursor
+set incsearch            " Show where search pattern typed so far matches
+set visualbell           " No bleep sound
+set which-key            " Enable Which-Key plugin
+set notimeout            " Do not hide Which-Key popup
+set hls                  " Enable search highlighting
+set ignorecase smartcase " Case-insensitive search
+set relativenumber       " Relative line numbers by default
+set peekaboo             " Show contents in the registers (IDEA plugin required)
+set showmode
+set incsearch
+set nu
+set relativenumber
+set ignorecase
+set smartcase
+
+" the leader key
+let mapleader=" "
+
+" Git
+nnoremap <leader>gf :action Git.Fetch<CR>
+nnoremap <leader>gp :action Vcs.Push<CR>
+nnoremap <leader>gk :action ActivateCommitToolWindow<CR>
+nnoremap <leader>gl :action Vcs.History<CR>
+
+" terminal
+nnoremap <C-t> :action ActivateTerminalToolWindow<CR>
+nnoremap <leader>t :action Terminal.OpenInTerminal<CR>
+
+" zen-mode
+nnoremap <C-z> :action ToggleDistractionFreeMode<CR>
+
+" Clear search highlights
+nmap <ESC> :nohlsearch<CR>
+
+" code interactions
+nnoremap <leader>rn :action RenameElement<CR>
+nmap <Leader>rf <Action>(RenameFile)
+nnoremap == :action ReformatCode<CR>
+vnoremap == :action VimReformatVisual<CR>
+nnoremap <leader>re :action Refactorings.QuickListPopupAction<CR>
+nnoremap <leader>su :action ShowUsages<CR>
+nnoremap <leader>sU :action FindUsages<CR>
+nnoremap <C--> :action CollapseAllRegions<CR>
+nnoremap <C-S-.> :action ExpandAllRegions<CR>
+nnoremap <M-S-t> :action ReopenClosedTab<CR>
+
+" code information
+nnoremap K :action ShowHoverInfo<CR>
+nnoremap g? :action ShowErrorDescription<CR>
+
+" code navigation
+nnoremap gi :action GotoImplementation<CR>
+
+" debugging
+nnoremap <C-c> :action Stop<CR>
+nnoremap <F1> :action ToggleLineBreakpoint<CR>
+
